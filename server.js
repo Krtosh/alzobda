@@ -21,6 +21,11 @@ function getVideoId(url) {
   return match ? match[1] : null;
 }
 
+// ✅ مهم: route رئيسي للـ healthcheck
+app.get("/", (req, res) => {
+  res.send("Server is running 🚀");
+});
+
 app.post("/summarize", async (req, res) => {
   try {
     const { url } = req.body;
@@ -36,7 +41,11 @@ app.post("/summarize", async (req, res) => {
     );
 
     const ytData = await ytRes.json();
-    const video = ytData.items[0];
+    const video = ytData.items?.[0];
+
+    if (!video) {
+      return res.json({ error: "ما حصلت الفيديو ❌" });
+    }
 
     const title = video.snippet.title;
     const channel = video.snippet.channelTitle;
@@ -81,6 +90,9 @@ app.post("/summarize", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+// ✅ أهم تعديل هنا
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
