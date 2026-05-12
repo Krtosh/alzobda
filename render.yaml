@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: alzobda
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: YOUTUBE_API_KEY
+        sync: false
