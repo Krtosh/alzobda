@@ -21,7 +21,7 @@ function getVideoId(url) {
   return match ? match[1] : null;
 }
 
-// ✅ مهم: route رئيسي للـ healthcheck
+// ✅ مهم للـ Railway
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
@@ -35,7 +35,7 @@ app.post("/summarize", async (req, res) => {
       return res.json({ error: "رابط غير صحيح ❌" });
     }
 
-    // 🎯 جلب معلومات الفيديو
+    // 🎯 معلومات الفيديو
     const ytRes = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${process.env.YOUTUBE_API_KEY}`
     );
@@ -51,38 +51,94 @@ app.post("/summarize", async (req, res) => {
     const channel = video.snippet.channelTitle;
     const thumbnail = video.snippet.thumbnails.high.url;
 
-    // 🎯 جلب الترجمة
-    let transcriptText = "";
-
+    // =========================
+    // 🎯 1. محاولة الترجمة
+    // =========================
     try {
       const transcript = await YoutubeTranscript.fetchTranscript(videoId);
-      transcriptText = transcript.map(t => t.text).join(" ");
-    } catch {
+      const transcriptText = transcript.map(t => t.text).join(" ");
+
+      const completion = await client.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "user",
+            content: `لخص الفيديو بنقاط:\n${transcriptText}`
+          }
+        ]
+      });
+
       return res.json({
         title,
         channel,
         thumbnail,
-        summary: "لا يوجد ترجمة ❌"
+        summary: completion.choices[0].message.content
       });
+
+    } catch {
+      console.log("❌ مافيه ترجمة - نستخدم الصوت");
+
+      // =========================
+      // 🎯 2. fallback بالصوت
+      // =========================
+      try {
+        const ytdl = (await import("ytdl-core")).default;
+        const fs = (await import("fs")).default;
+        const ffmpeg = (await import("fluent-ffmpeg")).default;
+        const ffmpegPath = (await import("ffmpeg-static")).default;
+
+        ffmpeg.setFfmpegPath(ffmpegPath);
+
+        const audioPath = "audio.mp3";
+
+        // تحميل الصوت
+        await new Promise((resolve, reject) => {
+          ytdl(`https://www.youtube.com/watch?v=${videoId}`, {
+            quality: "highestaudio"
+          })
+            .pipe(ffmpeg().audioBitrate(128).save(audioPath))
+            .on("end", resolve)
+            .on("error", reject);
+        });
+
+        // تحويل الصوت لنص
+        const transcription = await client.audio.transcriptions.create({
+          file: fs.createReadStream(audioPath),
+          model: "gpt-4o-mini-transcribe"
+        });
+
+        const text = transcription.text;
+
+        // التلخيص
+        const completion = await client.chat.completions.create({
+          model: "gpt-4o-mini",
+          messages: [
+            {
+              role: "user",
+              content: `لخص هذا الفيديو بنقاط:\n${text}`
+            }
+          ]
+        });
+
+        fs.unlinkSync(audioPath);
+
+        return res.json({
+          title,
+          channel,
+          thumbnail,
+          summary: completion.choices[0].message.content
+        });
+
+      } catch (err) {
+        console.log(err);
+        return res.json({
+          title,
+          channel,
+          thumbnail,
+          summary: "فشل تحليل الصوت ❌"
+        });
+      }
     }
-
-    // 🎯 التلخيص
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "user",
-          content: `لخص الفيديو بشكل احترافي مع نقاط:\n${transcriptText}`
-        }
-      ]
-    });
-
-    res.json({
-      title,
-      channel,
-      thumbnail,
-      summary: completion.choices[0].message.content
-    });
 
   } catch (error) {
     console.log(error);
@@ -90,7 +146,7 @@ app.post("/summarize", async (req, res) => {
   }
 });
 
-// ✅ أهم تعديل هنا
+// ✅ مهم للـ Railway
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
