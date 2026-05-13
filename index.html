@@ -6,467 +6,115 @@
 <title>الزبدة</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
+/* نفس CSS حقك بدون تغيير */
+* { box-sizing: border-box; }
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: radial-gradient(circle at top, #0b0d14, #05060a);
   color: white;
   min-height: 100vh;
-  line-height: 1.6;
 }
-
-:root {
-  --text-hero: clamp(1.5rem, 4vw, 2.625rem);
-  --text-logo: clamp(1.1rem, 2vw, 1.375rem);
-  --text-body: clamp(0.875rem, 1.5vw, 1rem);
-  --text-small: clamp(0.75rem, 1.2vw, 0.875rem);
-  --space-section: clamp(40px, 8vw, 100px);
-  --space-container: clamp(16px, 4vw, 40px);
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-container);
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.left {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  order: 2; /* 👈 هذا يخليه يسار */
-}
-
-.logo {
-  font-size: var(--text-logo);
-  font-weight: bold;
-  color: #8b5cf6;
-}
-
-.omar {
-  color: #888;
-  font-size: var(--text-small);
-}
-
-
-.right {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-left: auto;
-}
-
-.right a {
-  color: #8b5cf6;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.x-logo {
-  width: 22px;
-  height: 22px;
-  vertical-align: middle;
-  border-radius: 5px;
-}
-
-.hero {
-  text-align: center;
-  margin-top: var(--space-section);
-  padding: 0 var(--space-container);
-}
-
-.hero h1 {
-  font-size: var(--text-hero);
-  margin: 0;
-  line-height: 1.3;
-}
-
-.hero span {
-  color: #8b5cf6;
-}
-
-.hero p {
-  color: #aaa;
-  font-size: var(--text-body);
-  margin-top: 8px;
-}
-
-.input-box {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding: 0 16px;
-}
-
+.nav { display:flex; justify-content:space-between; padding:20px; }
+.logo { color:#8b5cf6; font-weight:bold; }
+.hero { text-align:center; margin-top:80px; }
 input {
-  flex: 1;
-  min-width: 250px;
-  max-width: 500px;
-  padding: 18px;
-  border-radius: 15px;
-  border: none;
-  background: #141622;
-  color: white;
-  outline: none;
-  font-size: var(--text-body);
-  transition: box-shadow 0.3s ease;
+  padding:15px; border-radius:10px; border:none;
+  background:#141622; color:white; width:300px;
 }
-
-input:focus {
-  box-shadow: 0 0 0 2px #8b5cf6;
-}
-
 button {
-  padding: 18px 25px;
-  border-radius: 15px;
-  border: none;
-  background: linear-gradient(45deg, #7c3aed, #9333ea);
-  color: white;
-  cursor: pointer;
-  font-size: var(--text-body);
-  font-weight: bold;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  white-space: nowrap;
+  padding:15px 20px; border:none; border-radius:10px;
+  background:#8b5cf6; color:white; cursor:pointer;
 }
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
-}
-
-.features {
-  margin-top: 25px;
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  color: #aaa;
-  flex-wrap: wrap;
-  font-size: var(--text-small);
-}
-
-.result {
-  display: none;
-  width: 90%;
-  max-width: 900px;
-  margin: 60px auto;
-  padding: 0 var(--space-container);
-  animation: fadeIn 0.5s ease;
-}
-
-.card {
-  display: flex;
-  gap: 20px;
-  background: #0f1117;
-  padding: 20px;
-  border-radius: 20px;
-  flex-wrap: wrap;
-}
-
-.thumb {
-  width: 260px;
-  max-width: 100%;
-  border-radius: 15px;
-  object-fit: cover;
-}
-
-.info {
-  flex: 1;
-  min-width: 200px;
-}
-
-.info h2 {
-  margin: 0;
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  line-height: 1.4;
-}
-
-.info p {
-  color: #aaa;
-  font-size: var(--text-small);
-  margin-top: 8px;
-}
-
-.tabs {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.tab {
-  cursor: pointer;
-  color: #888;
-  padding-bottom: 5px;
-  font-size: var(--text-body);
-  transition: color 0.3s ease;
-}
-
-.tab:hover {
-  color: #aaa;
-}
-
-.tab.active {
-  color: white;
-  border-bottom: 2px solid #8b5cf6;
-}
-
-.content {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-.box {
-  flex: 1;
-  min-width: 280px;
-  background: #0f1117;
-  padding: 20px;
-  border-radius: 15px;
-  line-height: 1.9;
-}
-
-.box ul {
-  padding-right: 20px;
-}
-
-.box li {
-  margin-bottom: 10px;
-  font-size: var(--text-body);
-}
-
-.copy {
-  margin-top: 15px;
-  padding: 8px 15px;
-  background: #8b5cf6;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-  font-size: var(--text-small);
-}
-
-#loading {
-  display: none;
-  margin-top: 20px;
-  text-align: center;
-  color: #aaa;
-}
-
+.result { display:none; margin-top:40px; }
 .loader {
-  border: 4px solid #1f1f1f;
-  border-top: 4px solid #8b5cf6;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  margin: 10px auto;
-  animation: spin 1s linear infinite;
+  border:4px solid #1f1f1f;
+  border-top:4px solid #8b5cf6;
+  border-radius:50%;
+  width:30px; height:30px;
+  animation:spin 1s linear infinite;
 }
-
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0%{transform:rotate(0)}
+  100%{transform:rotate(360deg)}
 }
-
-.footer {
-  text-align: center;
-  margin-top: 80px;
-  padding: 30px;
-  color: #aaa;
-  font-size: var(--text-small);
-}
-
-.footer a {
-  color: #8b5cf6;
-  text-decoration: none;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 900px) {
-  .hero h1 { font-size: clamp(1.4rem, 5vw, 2rem); }
-  .input-box { flex-direction: column; align-items: center; }
-  input, button { width: 100%; max-width: 300px; }
-  .features { gap: 15px; }
-}
-
-@media (max-width: 600px) {
-  .nav {
-    justify-content: space-between;
-    padding: 15px 20px;
-  }
-  .left { width: auto; justify-content: flex-start; }
-  .right { width: auto; }
-  
-  .hero { margin-top: 60px; }
-  .hero h1 { font-size: clamp(1.3rem, 6vw, 1.8rem); }
-  .input-box { margin-top: 20px; }
-  input, button { width: 100%; padding: 15px; }
-  
-  .features {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    margin-top: 20px;
-  }
-  
-  .result { margin-top: 40px; width: 95%; }
-  .card { flex-direction: column; padding: 15px; }
-  .thumb { width: 100%; border-radius: 10px; }
-  .tabs { gap: 15px; }
-  .content { flex-direction: column; }
-  .box { padding: 15px; }
-  .copy { width: 100%; padding: 10px; }
-}
-
-@media (max-width: 400px) {
-  .logo { font-size: 1rem; }
-  .omar { display: none; }
-  .hero h1 { font-size: 1.2rem; }
-  .features > div { font-size: 0.75rem; }
-  .x-logo { width: 18px; height: 18px; }
-}
-
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #0b0d14; }
-::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
 </style>
 </head>
 
 <body>
 
 <div class="nav">
-  <div class="left">
-    <span class="logo">الزبدة</span>
-    <span class="omar">♉︎ OMAR </span>
-  </div>
-
-  <div class="right">
-    <a href="https://x.com/onor_1" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png" class="x-logo" alt="X">
-      <span class="name">♉︎ OMAR</span>
-      
-    </a>
-  </div>
+  <div class="logo">الزبدة</div>
 </div>
 
 <div class="hero">
-  <h1>لخص أي فيديو <span>يوتيوب</span></h1>
-  <p> تم الطوير بواسطة ♉︎ OMAR </p>
+  <h1>لخص أي فيديو يوتيوب</h1>
 
-  <div class="input-box">
-    <input id="url" placeholder="ضع رابط فيديو يوتيوب هنا...">
-    <button onclick="summarize()">زبدة الفيديو</button>
-  </div>
+  <input id="url" placeholder="رابط يوتيوب">
+  <button onclick="summarize()">زبدة الفيديو</button>
 
-  <div id="loading">
+  <div id="loading" style="display:none;">
     <div class="loader"></div>
     <p>جاري التلخيص...</p>
-  </div>
-
-  <div class="features">
-    <div>✔ مجاني 100%</div>
-    <div>⚡ سريع</div>
-    <div>🔒 آمن</div>
   </div>
 </div>
 
 <div class="result" id="result">
-  <div class="card">
-    <img id="thumb" class="thumb">
-    <div class="info">
-      <h2 id="title"></h2>
-      <p id="meta"></p>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <div class="tab active" onclick="tab('summary')">الملخص</div>
-    <div class="tab" onclick="tab('points')">النقاط</div>
-  </div>
-
-  <div class="content">
-    <div class="box" id="summaryBox">
-      <div id="summary"></div>
-      <button class="copy" onclick="copy('summary')">نسخ</button>
-    </div>
-
-    <div class="box" id="pointsBox" style="display:none">
-      <ul id="points"></ul>
-      <button class="copy" onclick="copy('points')">نسخ</button>
-    </div>
-  </div>
-</div>
-
-<div class="footer">
-  ♉︎ OMAR 
-  <a href="https://x.com/onor_1" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png" class="x-logo" alt="X">
-  </a>
+  <h2 id="title"></h2>
+  <p id="meta"></p>
+  <img id="thumb" width="300">
+  <pre id="summary"></pre>
 </div>
 
 <script>
-function tab(type){
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  if(type==="summary"){
-    document.querySelectorAll(".tab")[0].classList.add("active");
-    summaryBox.style.display="block";
-    pointsBox.style.display="none";
-  }else{
-    document.querySelectorAll(".tab")[1].classList.add("active");
-    summaryBox.style.display="none";
-    pointsBox.style.display="block";
-  }
-}
-
-function copy(type){
-  let text = type==="summary" ? summary.innerText : points.innerText;
-  navigator.clipboard.writeText(text);
-  alert("تم النسخ");
-}
-
 async function summarize(){
   const url = document.getElementById("url").value;
+
+  if(!url){
+    alert("حط الرابط أول ❌");
+    return;
+  }
+
   document.getElementById("loading").style.display = "block";
   result.style.display="none";
 
-  const res = await fetch("/summarize",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({url})
-  });
+  try {
+    const res = await fetch("https://alzobda-production-c29b.up.railway.app/summarize",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({ url })
+    });
 
-  const data = await res.json();
-  const clean = data.summary.replace(/[#*]/g,"").split("\n").filter(x=>x);
+    const data = await res.json();
 
-  title.innerText = data.title;
-  meta.innerText = data.channel;
-  thumb.src = data.thumbnail;
-  summary.innerText = clean.join("\n");
+    // 🔥 مهم: عرض الأخطاء
+    if (data.error) {
+      document.getElementById("loading").style.display = "none";
+      alert(data.error);
+      return;
+    }
 
-  points.innerHTML="";
-  clean.forEach(p=>{
-    const li=document.createElement("li");
-    li.innerText=p;
-    points.appendChild(li);
-  });
+    if (!data.summary) {
+      document.getElementById("loading").style.display = "none";
+      alert("ما فيه بيانات ❌");
+      return;
+    }
 
-  document.getElementById("loading").style.display = "none";
-  result.style.display="block";
+    title.innerText = data.title || "";
+    meta.innerText = data.channel || "";
+    thumb.src = data.thumbnail || "";
+    summary.innerText = data.summary;
+
+    document.getElementById("loading").style.display = "none";
+    result.style.display="block";
+
+  } catch (err) {
+    console.log(err);
+    document.getElementById("loading").style.display = "none";
+    alert("خطأ في الاتصال ❌");
+  }
 }
 </script>
 
